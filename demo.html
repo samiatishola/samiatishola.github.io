@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
   <header class="sub-header">
     <nav class="navbar">
       <div class="logo">📚 Textbook Savings Guide</div>
@@ -21,20 +22,19 @@
       <p class="eyebrow">🇳🇬 Student Resource Tool</p>
       <h1>Nigerian Uni Textbook Alternatives (100-Level)</h1>
       <p>
-        Search by course code, filter by cost type, sort by savings, and estimate how much you can save this semester.
+        Discover free and affordable textbook alternatives, filter by cost, and instantly estimate how much you can save this semester.
       </p>
     </div>
   </header>
 
   <main class="container">
+
     <section class="controls card">
-      <div class="search-group">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search course code or course name (e.g., PHY 101)"
-        />
-      </div>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search course code or name (e.g., PHY 101)"
+      />
 
       <div class="filter-group">
         <button class="filter-btn active" data-filter="all">All</button>
@@ -43,30 +43,13 @@
         <button class="filter-btn" data-filter="expensive">Expensive</button>
       </div>
 
-      <div class="sort-group">
-        <button class="sort-btn" id="sortSavingsBtn">Sort by Highest Savings</button>
-      </div>
+      <button id="sortBtn">Sort by Highest Savings</button>
     </section>
 
     <section class="card total-card">
       <h2>Estimated Total Savings</h2>
-      <p class="helper-text">Select courses below to estimate how much you can save this semester.</p>
+      <p>Select courses to calculate your savings.</p>
       <p id="totalSavings">₦0</p>
-    </section>
-
-    <section class="quick-stats">
-      <div class="stat-pill">
-        <span class="stat-number">5</span>
-        <span class="stat-label">Courses Listed</span>
-      </div>
-      <div class="stat-pill">
-        <span class="stat-number">₦16,000</span>
-        <span class="stat-label">Highest Single Savings</span>
-      </div>
-      <div class="stat-pill">
-        <span class="stat-number">Free + Cheap</span>
-        <span class="stat-label">Best Budget Options</span>
-      </div>
     </section>
 
     <section class="table-wrapper card">
@@ -75,191 +58,154 @@
           <tr>
             <th>Course Code</th>
             <th>Course Name</th>
-            <th>Textbook Cost</th>
-            <th>Free Alternatives</th>
-            <th>Nigerian Context Resources</th>
-            <th>Student Tip</th>
-            <th>Estimated Savings</th>
-            <th>Include</th>
+            <th>Cost</th>
+            <th>Alternatives</th>
+            <th>Resources</th>
+            <th>Tip</th>
+            <th>Savings</th>
+            <th>Select</th>
           </tr>
         </thead>
+
         <tbody id="tableBody">
+
           <tr data-category="expensive">
-            <td class="course-code">PHY 101</td>
+            <td><strong>PHY 101</strong></td>
             <td>General Physics I</td>
             <td><span class="tag expensive">Expensive</span></td>
-            <td>
-              OpenStax: College Physics 2e<br>
-              Khan Academy: Physics<br>
-              MIT OCW: Classical Mechanics
-            </td>
-            <td>NOUN PHY101 Courseware (PDF)</td>
-            <td>
-              Most exams reward numericals. Drill past questions and end-of-chapter problems.
-            </td>
+            <td>OpenStax, Khan Academy, MIT OCW</td>
+            <td>NOUN Materials</td>
+            <td>Focus on numericals and past questions</td>
             <td class="savings" data-value="16000">₦16,000</td>
             <td><input type="checkbox" class="calc-box" /></td>
           </tr>
 
           <tr data-category="cheap">
-            <td class="course-code">MTH 101</td>
-            <td>Elementary Mathematics I</td>
+            <td><strong>MTH 101</strong></td>
+            <td>Mathematics I</td>
             <td><span class="tag cheap">Cheap</span></td>
-            <td>
-              OpenStax: Precalculus 2e<br>
-              Khan Academy: Math
-            </td>
-            <td>NOUN MTH101 Courseware (PDF)</td>
-            <td>
-              Past questions repeat. Focus on limits, differentiation basics, and trig identities.
-            </td>
+            <td>OpenStax, Khan Academy</td>
+            <td>NOUN Materials</td>
+            <td>Practice limits and differentiation</td>
             <td class="savings" data-value="8000">₦8,000</td>
             <td><input type="checkbox" class="calc-box" /></td>
           </tr>
 
           <tr data-category="expensive">
-            <td class="course-code">CHE 101</td>
-            <td>General Chemistry I</td>
+            <td><strong>CHE 101</strong></td>
+            <td>General Chemistry</td>
             <td><span class="tag expensive">Expensive</span></td>
-            <td>
-              OpenStax: Chemistry 2e<br>
-              Khan Academy: Chemistry
-            </td>
-            <td>NOUN CHM101 Courseware (PDF)</td>
-            <td>
-              Stoichiometry, gas laws, and atomic structure are almost always tested.
-            </td>
+            <td>OpenStax, Khan Academy</td>
+            <td>NOUN Materials</td>
+            <td>Master stoichiometry and gas laws</td>
             <td class="savings" data-value="15000">₦15,000</td>
             <td><input type="checkbox" class="calc-box" /></td>
           </tr>
 
           <tr data-category="free">
-            <td class="course-code">GST 101</td>
+            <td><strong>GST 101</strong></td>
             <td>Use of English</td>
             <td><span class="tag free">Free</span></td>
-            <td>
-              Free online grammar resources<br>
-              Purdue OWL<br>
-              British Council English
-            </td>
-            <td>University handouts / departmental materials</td>
-            <td>
-              Focus on comprehension, sentence correction, and common grammar patterns.
-            </td>
+            <td>Online grammar tools</td>
+            <td>Handouts</td>
+            <td>Focus on comprehension</td>
             <td class="savings" data-value="5000">₦5,000</td>
             <td><input type="checkbox" class="calc-box" /></td>
           </tr>
 
           <tr data-category="cheap">
-            <td class="course-code">ECO 101</td>
-            <td>Microeconomics I</td>
+            <td><strong>ECO 101</strong></td>
+            <td>Microeconomics</td>
             <td><span class="tag cheap">Cheap</span></td>
-            <td>
-              Khan Academy: Microeconomics<br>
-              OpenStax: Principles of Economics
-            </td>
-            <td>NOUN ECO101 Courseware (PDF)</td>
-            <td>
-              Understand demand, supply, elasticity, and market equilibrium very well.
-            </td>
+            <td>Khan Academy, OpenStax</td>
+            <td>NOUN Materials</td>
+            <td>Understand demand and supply deeply</td>
             <td class="savings" data-value="12000">₦12,000</td>
             <td><input type="checkbox" class="calc-box" /></td>
           </tr>
+
         </tbody>
       </table>
     </section>
+
   </main>
 
   <footer class="footer">
-    <p>© 2026 Nigerian Uni Textbook Alternatives</p>
+    <p>© 2026 Textbook Savings Guide</p>
   </footer>
 
   <script>
     const searchInput = document.getElementById("searchInput");
+    const rows = document.querySelectorAll("#tableBody tr");
     const filterButtons = document.querySelectorAll(".filter-btn");
-    const sortSavingsBtn = document.getElementById("sortSavingsBtn");
-    const tableBody = document.getElementById("tableBody");
     const totalSavings = document.getElementById("totalSavings");
+    const sortBtn = document.getElementById("sortBtn");
 
     let currentFilter = "all";
-    let sortDescending = false;
-
-    function formatNaira(value) {
-      return "₦" + value.toLocaleString();
-    }
-
-    function getRows() {
-      return Array.from(tableBody.querySelectorAll("tr"));
-    }
+    let sortDesc = true;
 
     function updateTable() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const rows = getRows();
+      const search = searchInput.value.toLowerCase();
 
       rows.forEach(row => {
-        const courseCode = row.cells[0].textContent.toLowerCase();
-        const courseName = row.cells[1].textContent.toLowerCase();
+        const text = row.innerText.toLowerCase();
         const category = row.dataset.category;
 
-        const matchesSearch =
-          courseCode.includes(searchTerm) || courseName.includes(searchTerm);
+        const matchSearch = text.includes(search);
+        const matchFilter = currentFilter === "all" || category === currentFilter;
 
-        const matchesFilter =
-          currentFilter === "all" || category === currentFilter;
-
-        row.style.display = matchesSearch && matchesFilter ? "" : "none";
+        row.style.display = matchSearch && matchFilter ? "" : "none";
       });
     }
 
     function updateSavings() {
       let total = 0;
-      const checkboxes = document.querySelectorAll(".calc-box");
 
-      checkboxes.forEach(box => {
+      document.querySelectorAll(".calc-box").forEach(box => {
+        const row = box.closest("tr");
+        const value = Number(row.querySelector(".savings").dataset.value);
+
         if (box.checked) {
-          const row = box.closest("tr");
-          const value = Number(row.querySelector(".savings").dataset.value);
           total += value;
+          row.style.backgroundColor = "#f0fff4";
+        } else {
+          row.style.backgroundColor = "";
         }
       });
 
-      totalSavings.textContent = formatNaira(total);
+      totalSavings.textContent = "₦" + total.toLocaleString();
     }
 
-    function sortTableBySavings() {
-      const rows = getRows();
+    function sortTable() {
+      const tbody = document.getElementById("tableBody");
+      const rowsArray = Array.from(rows);
 
-      rows.sort((a, b) => {
-        const aValue = Number(a.querySelector(".savings").dataset.value);
-        const bValue = Number(b.querySelector(".savings").dataset.value);
-        return sortDescending ? bValue - aValue : aValue - bValue;
+      rowsArray.sort((a, b) => {
+        const aVal = Number(a.querySelector(".savings").dataset.value);
+        const bVal = Number(b.querySelector(".savings").dataset.value);
+        return sortDesc ? bVal - aVal : aVal - bVal;
       });
 
-      rows.forEach(row => tableBody.appendChild(row));
+      rowsArray.forEach(row => tbody.appendChild(row));
 
-      sortDescending = !sortDescending;
-      sortSavingsBtn.textContent = sortDescending
-        ? "Sort by Lowest Savings"
-        : "Sort by Highest Savings";
-
-      updateTable();
+      sortDesc = !sortDesc;
     }
 
     searchInput.addEventListener("input", updateTable);
 
-    filterButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        filterButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-        currentFilter = button.dataset.filter;
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.dataset.filter;
         updateTable();
       });
     });
 
-    sortSavingsBtn.addEventListener("click", sortTableBySavings);
+    sortBtn.addEventListener("click", sortTable);
 
-    document.addEventListener("change", event => {
-      if (event.target.classList.contains("calc-box")) {
+    document.addEventListener("change", e => {
+      if (e.target.classList.contains("calc-box")) {
         updateSavings();
       }
     });
@@ -267,5 +213,6 @@
     updateTable();
     updateSavings();
   </script>
+
 </body>
 </html>
