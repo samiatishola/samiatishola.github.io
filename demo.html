@@ -44,12 +44,29 @@
       </div>
 
       <button id="sortBtn">Sort by Highest Savings</button>
+      <button id="selectAllBtn" type="button">Select All</button>
+      <button id="clearAllBtn" type="button">Clear All</button>
     </section>
 
     <section class="card total-card">
       <h2>Estimated Total Savings</h2>
-      <p>Select courses to calculate your savings.</p>
+      <p>Select courses to calculate your savings for the semester.</p>
       <p id="totalSavings">₦0</p>
+    </section>
+
+    <section class="quick-stats">
+      <div class="stat-pill">
+        <span class="stat-number">5</span>
+        <span class="stat-label">Courses Listed</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-number">₦16,000</span>
+        <span class="stat-label">Highest Single Savings</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-number">Free + Cheap</span>
+        <span class="stat-label">Best Budget Options</span>
+      </div>
     </section>
 
     <section class="table-wrapper card">
@@ -136,16 +153,23 @@
 
   <script>
     const searchInput = document.getElementById("searchInput");
-    const rows = document.querySelectorAll("#tableBody tr");
     const filterButtons = document.querySelectorAll(".filter-btn");
     const totalSavings = document.getElementById("totalSavings");
     const sortBtn = document.getElementById("sortBtn");
+    const selectAllBtn = document.getElementById("selectAllBtn");
+    const clearAllBtn = document.getElementById("clearAllBtn");
+    const tbody = document.getElementById("tableBody");
 
     let currentFilter = "all";
     let sortDesc = true;
 
+    function getRows() {
+      return Array.from(document.querySelectorAll("#tableBody tr"));
+    }
+
     function updateTable() {
       const search = searchInput.value.toLowerCase();
+      const rows = getRows();
 
       rows.forEach(row => {
         const text = row.innerText.toLowerCase();
@@ -174,11 +198,16 @@
       });
 
       totalSavings.textContent = "₦" + total.toLocaleString();
+
+      totalSavings.style.transition = "transform 0.2s ease";
+      totalSavings.style.transform = "scale(1.08)";
+      setTimeout(() => {
+        totalSavings.style.transform = "scale(1)";
+      }, 200);
     }
 
     function sortTable() {
-      const tbody = document.getElementById("tableBody");
-      const rowsArray = Array.from(rows);
+      const rowsArray = getRows();
 
       rowsArray.sort((a, b) => {
         const aVal = Number(a.querySelector(".savings").dataset.value);
@@ -188,7 +217,29 @@
 
       rowsArray.forEach(row => tbody.appendChild(row));
 
+      sortBtn.textContent = sortDesc
+        ? "Sort by Lowest Savings"
+        : "Sort by Highest Savings";
+
       sortDesc = !sortDesc;
+      updateTable();
+    }
+
+    function selectAllVisible() {
+      getRows().forEach(row => {
+        if (row.style.display !== "none") {
+          const box = row.querySelector(".calc-box");
+          box.checked = true;
+        }
+      });
+      updateSavings();
+    }
+
+    function clearAllSelections() {
+      document.querySelectorAll(".calc-box").forEach(box => {
+        box.checked = false;
+      });
+      updateSavings();
     }
 
     searchInput.addEventListener("input", updateTable);
@@ -203,6 +254,8 @@
     });
 
     sortBtn.addEventListener("click", sortTable);
+    selectAllBtn.addEventListener("click", selectAllVisible);
+    clearAllBtn.addEventListener("click", clearAllSelections);
 
     document.addEventListener("change", e => {
       if (e.target.classList.contains("calc-box")) {
