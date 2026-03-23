@@ -18,8 +18,11 @@
     </nav>
 
     <div class="sub-header-content">
+      <p class="eyebrow">🇳🇬 Student Resource Tool</p>
       <h1>Nigerian Uni Textbook Alternatives (100-Level)</h1>
-      <p>Search by course code, filter by cost type, and calculate your estimated savings.</p>
+      <p>
+        Search by course code, filter by cost type, sort by savings, and estimate how much you can save this semester.
+      </p>
     </div>
   </header>
 
@@ -29,7 +32,7 @@
         <input
           type="text"
           id="searchInput"
-          placeholder="Search course code (e.g., PHY 101)"
+          placeholder="Search course code or course name (e.g., PHY 101)"
         />
       </div>
 
@@ -39,11 +42,31 @@
         <button class="filter-btn" data-filter="cheap">Cheap</button>
         <button class="filter-btn" data-filter="expensive">Expensive</button>
       </div>
+
+      <div class="sort-group">
+        <button class="sort-btn" id="sortSavingsBtn">Sort by Highest Savings</button>
+      </div>
     </section>
 
     <section class="card total-card">
       <h2>Estimated Total Savings</h2>
+      <p class="helper-text">Select courses below to estimate how much you can save this semester.</p>
       <p id="totalSavings">₦0</p>
+    </section>
+
+    <section class="quick-stats">
+      <div class="stat-pill">
+        <span class="stat-number">5</span>
+        <span class="stat-label">Courses Listed</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-number">₦16,000</span>
+        <span class="stat-label">Highest Single Savings</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-number">Free + Cheap</span>
+        <span class="stat-label">Best Budget Options</span>
+      </div>
     </section>
 
     <section class="table-wrapper card">
@@ -60,9 +83,9 @@
             <th>Include</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="tableBody">
           <tr data-category="expensive">
-            <td>PHY 101</td>
+            <td class="course-code">PHY 101</td>
             <td>General Physics I</td>
             <td><span class="tag expensive">Expensive</span></td>
             <td>
@@ -79,7 +102,7 @@
           </tr>
 
           <tr data-category="cheap">
-            <td>MTH 101</td>
+            <td class="course-code">MTH 101</td>
             <td>Elementary Mathematics I</td>
             <td><span class="tag cheap">Cheap</span></td>
             <td>
@@ -95,7 +118,7 @@
           </tr>
 
           <tr data-category="expensive">
-            <td>CHE 101</td>
+            <td class="course-code">CHE 101</td>
             <td>General Chemistry I</td>
             <td><span class="tag expensive">Expensive</span></td>
             <td>
@@ -111,7 +134,7 @@
           </tr>
 
           <tr data-category="free">
-            <td>GST 101</td>
+            <td class="course-code">GST 101</td>
             <td>Use of English</td>
             <td><span class="tag free">Free</span></td>
             <td>
@@ -128,7 +151,7 @@
           </tr>
 
           <tr data-category="cheap">
-            <td>ECO 101</td>
+            <td class="course-code">ECO 101</td>
             <td>Microeconomics I</td>
             <td><span class="tag cheap">Cheap</span></td>
             <td>
@@ -154,20 +177,26 @@
   <script>
     const searchInput = document.getElementById("searchInput");
     const filterButtons = document.querySelectorAll(".filter-btn");
-    const tableRows = document.querySelectorAll("#courseTable tbody tr");
-    const checkboxes = document.querySelectorAll(".calc-box");
+    const sortSavingsBtn = document.getElementById("sortSavingsBtn");
+    const tableBody = document.getElementById("tableBody");
     const totalSavings = document.getElementById("totalSavings");
 
     let currentFilter = "all";
+    let sortDescending = false;
 
     function formatNaira(value) {
       return "₦" + value.toLocaleString();
     }
 
+    function getRows() {
+      return Array.from(tableBody.querySelectorAll("tr"));
+    }
+
     function updateTable() {
       const searchTerm = searchInput.value.toLowerCase();
+      const rows = getRows();
 
-      tableRows.forEach(row => {
+      rows.forEach(row => {
         const courseCode = row.cells[0].textContent.toLowerCase();
         const courseName = row.cells[1].textContent.toLowerCase();
         const category = row.dataset.category;
@@ -184,6 +213,7 @@
 
     function updateSavings() {
       let total = 0;
+      const checkboxes = document.querySelectorAll(".calc-box");
 
       checkboxes.forEach(box => {
         if (box.checked) {
@@ -194,6 +224,25 @@
       });
 
       totalSavings.textContent = formatNaira(total);
+    }
+
+    function sortTableBySavings() {
+      const rows = getRows();
+
+      rows.sort((a, b) => {
+        const aValue = Number(a.querySelector(".savings").dataset.value);
+        const bValue = Number(b.querySelector(".savings").dataset.value);
+        return sortDescending ? bValue - aValue : aValue - bValue;
+      });
+
+      rows.forEach(row => tableBody.appendChild(row));
+
+      sortDescending = !sortDescending;
+      sortSavingsBtn.textContent = sortDescending
+        ? "Sort by Lowest Savings"
+        : "Sort by Highest Savings";
+
+      updateTable();
     }
 
     searchInput.addEventListener("input", updateTable);
@@ -207,8 +256,12 @@
       });
     });
 
-    checkboxes.forEach(box => {
-      box.addEventListener("change", updateSavings);
+    sortSavingsBtn.addEventListener("click", sortTableBySavings);
+
+    document.addEventListener("change", event => {
+      if (event.target.classList.contains("calc-box")) {
+        updateSavings();
+      }
     });
 
     updateTable();
